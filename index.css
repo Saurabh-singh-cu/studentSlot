@@ -5,16 +5,12 @@
   margin: 0px;
   padding: 0px;
 }
-body{
- 
+body {
   height: 100vh;
- 
+
   align-items: center; /* center horizontally */
   background: linear-gradient(135deg, var(--main-blue), var(--main-purple));
- 
 }
-
-
 
 /* @import 'font-awesome/css/font-awesome.min.css'; */
 
@@ -494,7 +490,7 @@ nav ul li a .title {
   /* border: 1px solid black; */
   border-radius: 10px;
   align-items: center;
- /* margin-top: 100px; */
+  /* margin-top: 100px; */
 }
 
 /* Add Users  */
@@ -624,7 +620,6 @@ li.highlighted {
   width: 100vw;
   height: 100vh;
   flex-direction: column;
- 
 }
 .example {
   display: flex;
@@ -809,7 +804,7 @@ li.highlighted {
 
 /* accordian  */
 
-.accordian{
+.accordian {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -819,32 +814,29 @@ li.highlighted {
   flex-direction: column;
   position: absolute;
   top: 23%;
- 
-   
 }
-.accordian-header{
+.accordian-header {
   display: flex;
   justify-content: space-between;
   width: 50vw;
   padding-left: 40px;
-  padding-right: 40px ;
+  padding-right: 40px;
   background-color: #e6e6e6;
   height: 50px;
   /* height: 20px; */
   align-items: center;
   margin-bottom: 20px;
   cursor: pointer;
-
 }
-.role-head{
+.role-head {
   font-weight: bold;
 }
-.example2{
+.example2 {
   display: flex;
   justify-content: space-between;
   width: 50vw;
   padding-left: 40px;
-  padding-right: 40px ;
+  padding-right: 40px;
   background-color: #e6e6e6;
   height: 50px;
   /* height: 20px; */
@@ -853,7 +845,7 @@ li.highlighted {
   /* position: absolute; */
 }
 
-.timer{
+.timer {
   position: absolute;
   top: 17%;
   width: 100vw;
@@ -882,7 +874,6 @@ li.highlighted {
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
-  
 }
 
 .contact-info {
@@ -905,10 +896,9 @@ li.highlighted {
   display: block;
 }
 
-.home-wrap{
+.home-wrap {
   display: flex;
 }
-
 
 /* country code  */
 
@@ -940,14 +930,13 @@ li.highlighted {
   width: 369px;
 }
 
-.iti__selected-dial-code{
+.iti__selected-dial-code {
   font-weight: bold;
 }
 
-.loginlogo{
+.loginlogo {
   animation: infinite 20s linear;
 }
-
 
 .frame {
   width: 90%;
@@ -964,33 +953,41 @@ li.highlighted {
   color: #fff;
   border-radius: 5px;
   padding: 10px 25px;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-weight: 500;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   display: inline-block;
-   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-   7px 7px 20px 0px rgba(0,0,0,.1),
-   4px 4px 5px 0px rgba(0,0,0,.1);
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+    7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   outline: none;
 }
 
 /* 1 */
 .btn-1 {
-	background: rgb(6,14,131);
-  background: linear-gradient(0deg, rgba(6,14,131,1) 0%, rgba(12,25,180,1) 100%);
+  background: rgb(6, 14, 131);
+  background: linear-gradient(
+    0deg,
+    rgba(6, 14, 131, 1) 0%,
+    rgba(12, 25, 180, 1) 100%
+  );
   border: none;
 }
 .btn-1:hover {
-   background: rgb(0,3,255);
-background: linear-gradient(0deg, rgba(0,3,255,1) 0%, rgba(2,126,251,1) 100%);
+  background: rgb(0, 3, 255);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 3, 255, 1) 0%,
+    rgba(2, 126, 251, 1) 100%
+  );
 }
 
 .container {
-  max-width: 500px;
-  width: 100%;
+  /* max-width: 500px; */
+  max-width: 1000px;
+  /* width: 100%; */
   background: #fff;
   /* padding: 25px 30px; */
   border-radius: 5px;
@@ -1139,12 +1136,89 @@ form .button input:hover {
   }
 }
 
-.slot-container{
+.slot-container {
   display: flex;
-  justify-content: end;
+  justify-content: space-around;
+  align-items: center;
   width: 95vw;
-  margin-right: 60px;
- 
-
+  /* margin-right: 60px; */
+  flex-wrap: wrap;
+}
+.two-side {
+  display: flex;
+  justify-content: space-between;
 }
 
+/* table simmer ui css */
+
+.loading-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+  background-size: 1000px 100%;
+}
+
+th {
+  text-align: left;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.circle {
+  height: 70px;
+  width: 70px;
+  border-radius: 35px;
+}
+
+.box {
+  height: 70px;
+  width: 70px;
+}
+
+.line {
+  height: 20px;
+  width: 300px;
+}
+.circle-content{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-right: 21px;
+}
+
+.Toastify__toast-container--top-center {
+  top: 10em;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.toast{
+  top: 10em;
+}
+.slots-contain{
+  display: flex;
+  justify-content: space-around;
+}
+.this-is-slot{
+  width: 200px;
+  display: flex;
+  background: #c8e5c4;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid rgb(23, 235, 34);
+}
+.this-is-not-slot{
+  width: 200px;
+  display: flex;
+  background: rgb(226, 204, 204);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid red;
+}

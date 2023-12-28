@@ -93,6 +93,7 @@ import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
 import StudentHomePage from "./src/components/StudentComponent/StudentHomePage/StudentHomePage";
 import useOnlineStatus from "./src/components/CommonComponent/useOnlineOffline";
+import SubjectSlot from "./src/components/StudentComponent/StudentHomePage/SubjectSlot";
 
 const AppComponent = () => {
   const onlineStatus = useOnlineStatus();
@@ -128,6 +129,10 @@ const appRoute = createBrowserRouter([
       {
         path: "/slot-book",
         element: <StudentHomePage />,
+      },
+      {
+        path: "/book-slot",
+        element: <SubjectSlot />,
       },
       {
         path: "/login",

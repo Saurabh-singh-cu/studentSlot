@@ -67,7 +67,7 @@ const HomePage = () => {
               </h2>
               <div class="frame">
                 <Link to="/slot-book">
-                  <button class="custom-btn btn-1">Book Slot</button>
+                  <button className="custom-btn btn-1">Book Slot</button>
                 </Link>
               </div>
             </div>
