@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { UserOutlined } from "@ant-design/icons";
-import Spinner from "../../CommonComponent/Spinner";
-import { Avatar, Space, Tour } from "antd";
-import { ConfigProvider } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import { slotBook } from "../../../redux/slices/Slots/BookSlots";
-import CircleSpinner from "../../CommonComponent/CircleSpinner";
-import Popup from "../../CommonComponent/Popup";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
+import { QuestionCircleOutlined, UserOutlined } from "@ant-design/icons";
+import { Space, Tooltip } from "antd";
+import { Avatar, Space } from "antd";
+
+import Spinner from "../../CommonComponent/Spinner";
+import Popup from "../../CommonComponent/Popup";
+import CircleSpinner from "../../CommonComponent/CircleSpinner";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const StudentHomePage = () => {
   const [loading, setLoading] = useState(false);
-  const [ circleLoading, setCircleLoading ] = useState(false);
+  const [circleLoading, setCircleLoading] = useState(false);
   const [studentData, setStudentData] = useState(null);
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState(null);
+
+  const navigate = useNavigate();
+  const customColors = ["#BF3131"];
 
   const location = useLocation();
   console.log(location, "LOCATION");
@@ -68,18 +72,12 @@ const StudentHomePage = () => {
       setStudentData(parseStudentData);
       console.log(parseStudentData, "DATA-Student");
     }
-    // setLoading(true);
-    // const timeout = setTimeout(() => {
-    //   setLoading(false);
-    // }, 1000);
-
-    // return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setCircleLoading(true)
+        setCircleLoading(true);
         const storeStudentData = localStorage.getItem("studentData");
 
         console.log("Stored Student Data:", { storeStudentData });
@@ -119,7 +117,7 @@ const StudentHomePage = () => {
 
           if (data && data.length > 0) {
             setStudentData(data[0]);
-            setCircleLoading(false)
+            setCircleLoading(false);
           } else {
             console.error("No data received from the server");
           }
@@ -134,23 +132,43 @@ const StudentHomePage = () => {
     fetchData();
   }, []);
 
+  // useEffect(() => {
+  //   // Display the popup on page load
+  //   toast(<Popup />, {
+  //     position: "bottom-center",
+  //     autoClose: false,
+  //     closeOnClick: true,
+  //     draggable: true,
+  //   });
+  // }, []);
+
+  // ...
 
   useEffect(() => {
-    // Display the popup on page load
-    toast(<Popup />, {
-      position: "bottom-center",
-      autoClose: false,
-      closeOnClick: true,
-      draggable: true,
-    });
+    // Display the popup on page load with a delay of 5 seconds
+    const delay = 5000;
+    const timeoutId = setTimeout(() => {
+      toast(<Popup />, {
+        position: "bottom-center",
+        autoClose: false,
+        closeOnClick: true,
+        draggable: true,
+        backgroundColor: "red",
+      });
+    }, delay);
+
+    // Clear the timeout if the component unmounts or when the effect is re-run
+    return () => clearTimeout(timeoutId);
   }, []);
+
+  // ...
 
   if (!studentData) {
     return <p>Loading...</p>;
   }
 
-  const showSlots = () => {
-    slotBook();
+  const navigateToMinusOne = () => {
+    navigate(-1);
   };
 
   return (
@@ -160,7 +178,7 @@ const StudentHomePage = () => {
       ) : (
         <>
           {" "}
-          <h1>Hello</h1>
+         
           <ToastContainer />
           <div className="slot-container">
             <div className="container">
@@ -170,10 +188,15 @@ const StudentHomePage = () => {
                   {" "}
                   <Avatar
                     style={{
-                      backgroundColor: "#87d068",
+                      backgroundColor: "#680000",
                     }}
                     icon={<UserOutlined />}
                   />
+                </span>
+                <span style={{ float: "right" }}>
+                <div style={{ cursor: "pointer", fontSize:"15px" }} onClick={navigateToMinusOne}>
+              {"<--"} Back
+            </div>
                 </span>
               </div>
 
@@ -199,7 +222,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.student_email}
@@ -217,7 +240,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.student_uid}
@@ -226,7 +249,7 @@ const StudentHomePage = () => {
                     />
                     {circleLoading && <CircleSpinner />}
                   </div>
-                
+
                   <div className="input__box">
                     <span className="details">Phone Number</span>
                     {/* <input
@@ -235,7 +258,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.student_mobile}
@@ -253,7 +276,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.gender_name}
@@ -271,7 +294,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.session}
@@ -289,7 +312,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.prog_level_name}
@@ -308,7 +331,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.program_name}
@@ -326,7 +349,7 @@ const StudentHomePage = () => {
                       style={{ cursor: "no-drop" }}
                       disabled
                     /> */}
-                     <input
+                    <input
                       type="text"
                       // value={studentData?.student_name}
                       value={circleLoading ? "" : studentData?.semester_name}
@@ -343,35 +366,31 @@ const StudentHomePage = () => {
                   </div>
                 </div>
 
-            
-
                 <div className="button">
                   <input type="submit" value="Register" />
                 </div>
               </form>
             </div>
-            {/* <div className="subject-table">
-              <h2>Subjects</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Subject Code</th>
-                    <th>Subject Name</th>
-                   
-                  </tr>
-                </thead>
-                <tbody>
-                  {subjects.map((subject) => (
-                    <tr key={subject.subject_id}>
-                      <td>{subject.subject_code}</td>
-                      <td>{subject.subject_name}</td>
-                     
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div> */}
           </div>
+
+          <div className="helpBox">
+          <Space wrap>
+            {customColors.map((color) => (
+              <Tooltip
+              className="title"
+                placement="top"
+                title=" Verify your session details, including name, email, phone number, UID and so on. Report
+                    inaccuracies to +9172 91XY Z895 or mail us at helpdesk@cumail.in for assistance. After verification, proceed
+                    to book a slot by clicking "
+                color={color}
+                key={color}
+              >
+                <QuestionCircleOutlined />
+              </Tooltip>
+            ))}
+          </Space>
+          </div>
+        
         </>
       )}
     </>

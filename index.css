@@ -1222,3 +1222,10 @@ th {
   border-radius: 6px;
   border: 1px solid red;
 }
+
+.helpBox{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 30px;
+}

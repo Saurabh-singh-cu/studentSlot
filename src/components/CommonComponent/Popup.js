@@ -7,11 +7,15 @@ const Popup = () => {
     <div className="toast">
       <h2>Guidelines</h2>
       <ul>
-       <p> Here is your session profile information, including details about your
-        email, UID, and phone number. If there are any inaccuracies, please
-        contact the provided number 7896541235 for assistance. Once you've
-        verified your details, proceed to the next step of booking a slot by
-        clicking the "Next" button. </p>
+        <p>
+          {" "}
+          Verify your session details, including name, email, phone number, UID,
+          and so on. Report inaccuracies to{" "}
+          <span style={{ color: "orange" }}>+9172 91XY Z895</span> or mail us{" "}
+          <span style={{ color: "orange" }}>helpdesk@cumail.in</span> for
+          assistance. After verification, proceed to book a slot by clicking{" "}
+          <span style={{ color: "green", fontWeight: "bold" }}>"Next"</span>.{" "}
+        </p>
         {/* Add more dos and don'ts as needed */}
       </ul>
     </div>

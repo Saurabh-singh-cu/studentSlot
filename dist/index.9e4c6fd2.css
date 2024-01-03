@@ -1125,6 +1125,13 @@ th {
   display: flex;
 }
 
+.helpBox {
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 30px;
+  display: flex;
+}
+
 :root {
   --toastify-color-light: #fff;
   --toastify-color-dark: #121212;
