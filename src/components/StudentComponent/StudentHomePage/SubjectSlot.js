@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 import TableSimmerUi from "../../CommonComponent/TableSimmerUi";
-
-import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Space, Tooltip } from "antd";
-import { ToastContainer, toast } from "react-toastify";
 import PopupTwo from "../../CommonComponent/PopupTwo";
 
 const SubjectSlot = () => {
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubjects, setSelectedSubjects] = useState({});
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [studentData, setStudentData] = useState();
   const [totalSlotsCount, setTotalSlotsCount] = useState(0);
-
 
   const navigate = useNavigate();
   const customColors = ["#BF3131"];
@@ -68,14 +64,15 @@ const SubjectSlot = () => {
             setSubjects(slotData);
 
             const totalSlots = slotData.reduce((count, subject) => {
-              return count + subject.slot_list.split(",").filter(Boolean).length;
+              return (
+                count + subject.slot_list.split(",").filter(Boolean).length
+              );
             }, 0);
-    
             setTotalSlotsCount(totalSlots);
 
             const initialSelectedSubjects = {};
             slotData.forEach((subject) => {
-              initialSelectedSubjects[subject.subject_id] = null;
+              initialSelectedSubjects[subject.subject_id] = "";
             });
             setSelectedSubjects(initialSelectedSubjects);
           } else {
@@ -106,7 +103,6 @@ const SubjectSlot = () => {
   };
 
   useEffect(() => {
-    // Display the popup on page load with a delay of 5 seconds
     const delay = 5000;
     const timeoutId = setTimeout(() => {
       toast(<PopupTwo />, {
@@ -118,16 +114,19 @@ const SubjectSlot = () => {
       });
     }, delay);
 
-    // Clear the timeout if the component unmounts or when the effect is re-run
     return () => clearTimeout(timeoutId);
   }, []);
 
-  
+  const handleSlotSubmission = (e) => {
+    e.preventDefault();
+    alert("Submitted Successfully!");
+  };
 
   return (
     <div>
-       <ToastContainer />
+      <ToastContainer />
       <div className="slot-container">
+        {/* <form className="slot-container"  onSubmit={handleSlotSubmission}> */}
         <div
           style={{ marginTop: "113px", padding: "30px", width: "100vw" }}
           className="subject-tabl"
@@ -146,55 +145,50 @@ const SubjectSlot = () => {
             <TableSimmerUi />
           ) : (
             <>
-              <table>
+              <table style={{ width: "100%" }}>
                 <thead>
                   <tr>
                     <th style={{ width: "100px" }}>Subject Code</th>
                     <th style={{ width: "200px" }}>Subject Name</th>
-                    <th>Available Slots  </th>
-                    
+                    <th>Available Slots </th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {subjects.map((subject) => (
                     <tr key={subject.subject_id}>
-                      <td style={{ width: "100px" }}>{subject.subject_code}</td>
-                      <td style={{ width: "200px" }}>{subject.subject_name}</td>
+                      <td>{subject.subject_code}</td>
+                      <td>{subject.subject_name}</td>
                       <td>
                         <div className="slots">
                           <div className="slots-contain">
-                           
                             <p>
-                              
                               {subject?.slot_list
                                 .split(",")
                                 .filter(Boolean)
-                                .map((slot, index) => (
+                                .map((slot, slotIndex) => (
                                   <span
-                                    style={{ cursor: "pointer" }}
+                                    key={slotIndex}
                                     className={
                                       selectedSubjects[subject.subject_id] ===
-                                      `slot${index + 1}`
+                                      `slot${slotIndex + 1}`
                                         ? "this-is-slot"
                                         : "this-is-not-slot"
                                     }
-                                    key={index}
                                   >
-                                    {`Slot ${index + 1}: ${slot.trim()}`}{" "}
+                                    {`Slot ${slotIndex + 1}: ${slot.trim()}`}{" "}
                                     <input
-                                      style={{ marginLeft: "10px" }}
                                       type="radio"
                                       name={`slot_${subject.subject_id}`}
                                       onChange={() =>
                                         handleCheckboxChange(
                                           subject.subject_id,
-                                          `slot${index + 1}`
+                                          `slot${slotIndex + 1}`
                                         )
                                       }
                                       checked={
                                         selectedSubjects[subject.subject_id] ===
-                                        `slot${index + 1}`
+                                        `slot${slotIndex + 1}`
                                       }
                                     />
                                   </span>
@@ -222,25 +216,8 @@ const SubjectSlot = () => {
             </>
           )}
         </div>
+        {/* </form> */}
       </div>
-
-      {/* <div className="helpBox">
-          <Space wrap>
-            {customColors.map((color) => (
-              <Tooltip
-              className="title"
-                placement="top"
-                title=" Welcome to the slot booking page for your exams. Here, you can choose the available slots for each subject, whether it's one, two, or more. Remember, you can only select one slot for each subject. Be sure to book slots for all subjects, including any specializations or electives.
-
-                Once you've selected the slots for every subject or specialization/elective, carefully confirm your choices. Keep in mind that this process is irreversible. If you're satisfied with your selections, press the 'Submit' button to finalize your slot bookings. Once submitted, your slots for the exams will be confirmed."
-                color={color}
-                key={color}
-              >
-                <QuestionCircleOutlined />
-              </Tooltip>
-            ))}
-          </Space>
-          </div> */}
     </div>
   );
 };
