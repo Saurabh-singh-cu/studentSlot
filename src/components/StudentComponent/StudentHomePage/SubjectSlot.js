@@ -4,219 +4,383 @@ import { ToastContainer, toast } from "react-toastify";
 
 import TableSimmerUi from "../../CommonComponent/TableSimmerUi";
 import PopupTwo from "../../CommonComponent/PopupTwo";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const SubjectSlot = () => {
-  const [subjects, setSubjects] = useState([]);
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [studentData, setStudentData] = useState();
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [totalSlotsCount, setTotalSlotsCount] = useState(0);
-
+  const [elecSpec, setElecSpec] = useState([]);
+  const [selectedElectives, setSelectedElectives] = useState([]);
   const navigate = useNavigate();
-  const customColors = ["#BF3131"];
-  useEffect(() => {
-    const fetchSlotsAndSubject = async () => {
-      setLoading(true);
-      try {
-        const storedStudentData = localStorage.getItem("studentData");
 
-        let userEmail = "";
+  // fetch subject
 
-        if (storedStudentData) {
-          let ParseStudentData;
-          try {
-            ParseStudentData = JSON.parse(storedStudentData);
-            console.log(ParseStudentData, "PPPPPPPPPPPP");
-          } catch (error) {
-            console.log(error);
-          }
+  const fetchSlotsAndSubject = async () => {
+    setLoading(true);
+    try {
+      const storedStudentData = localStorage.getItem("studentData");
 
-          if (ParseStudentData && ParseStudentData.user_email) {
-            setStudentData(ParseStudentData);
-            userEmail = ParseStudentData.user_email;
-          }
-          console.log({ userEmail }, "UUUUUUUWWWW");
-        } else {
-          console.log("Error");
+      let userEmail = "";
+
+      if (storedStudentData) {
+        let ParseStudentData;
+        try {
+          ParseStudentData = JSON.parse(storedStudentData);
+          // console.log(ParseStudentData, "PPPPPPPPPPPP");
+        } catch (error) {
+          console.log(error);
         }
 
-        const requestBody = {
-          email: userEmail,
-          session: 202401,
-        };
-
-        const response = await fetch(
-          "http://172.17.18.255:8080/exam_sch/api/get_subjects_and_slots",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          }
-        );
-
-        if (response.ok) {
-          const slotData = await response.json();
-          console.log("Subjects Slots API Response:", slotData);
-
-          if (Array.isArray(slotData)) {
-            setSubjects(slotData);
-
-            const totalSlots = slotData.reduce((count, subject) => {
-              return (
-                count + subject.slot_list.split(",").filter(Boolean).length
-              );
-            }, 0);
-            setTotalSlotsCount(totalSlots);
-
-            const initialSelectedSubjects = {};
-            slotData.forEach((subject) => {
-              initialSelectedSubjects[subject.subject_id] = "";
-            });
-            setSelectedSubjects(initialSelectedSubjects);
-          } else {
-            console.error("Subjects data is not an array:", slotData);
-          }
-        } else {
-          console.error("Server response not okay for subjects");
+        if (ParseStudentData && ParseStudentData.user_email) {
+          setStudentData(ParseStudentData);
+          userEmail = ParseStudentData.user_email;
         }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching or processing subjects:", error);
-        setLoading(false);
+        // console.log({ userEmail }, "UUUUUUUWWWW");
+      } else {
+        console.log("Error");
       }
+
+      const requestBody = {
+        email: userEmail,
+        session: 202401,
+      };
+
+      const response = await fetch(
+        "http://172.17.18.255:8080/exam_sch/api/get_subjects_and_slots",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      if (response.ok) {
+        const slotData = await response.json();
+        console.log("Subjects Slots API Response:", slotData);
+
+        if (Array.isArray(slotData)) {
+          setSubjects(slotData);
+
+          const totalSlots = slotData.reduce((count, subject) => {
+            return count + subject.slot_list.split(",").filter(Boolean).length;
+          }, 0);
+          setTotalSlotsCount(totalSlots);
+
+          const initialSelectedSubjects = {};
+          slotData.forEach((subject) => {
+            initialSelectedSubjects[subject.subject_id] = "";
+          });
+          setSelectedElectives(initialSelectedSubjects);
+        } else {
+          console.error("Subjects data is not an array:", slotData);
+        }
+      } else {
+        console.error("Server response not okay for subjects");
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching or processing subjects:", error);
+      setLoading(false);
+    }
+  };
+
+  // fetch elect/Spec
+
+  const fetchElecSpec = async () => {
+    const storedStudentData = localStorage.getItem("studentData");
+    let userEmail = "";
+    if (storedStudentData) {
+      let ParseStudentData;
+      try {
+        ParseStudentData = JSON.parse(storedStudentData);
+        // console.log(ParseStudentData, "PPPPPPPPPPPP");
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (ParseStudentData && ParseStudentData.user_email) {
+        setStudentData(ParseStudentData);
+        userEmail = ParseStudentData.user_email;
+      }
+      // console.log({ userEmail }, "UUUUUUUWWWW");
+    } else {
+      console.log("Error");
+    }
+
+    const requestBodySpecElec = {
+      email: "Banraksh@gmail.com",
+      // email: userEmail,
+      session: 202401,
     };
 
+    const response = await fetch(
+      "http://172.17.18.255:8080/exam_sch/api/get_electives_and_slots",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBodySpecElec),
+      }
+    );
+    const result = await response.json();
+    setElecSpec(result?.slots);
+    console.log(result, "RESULT");
+    try {
+      if (response.status === 400) {
+        swal({
+          title: `${result?.error}`,
+          text: `Warning`,
+          icon: "warning",
+          button: "Close",
+        });
+      }
+    } catch (error) {
+      swal({
+        title: `${result?.error}`,
+        text: `Warning`,
+        icon: "error",
+        button: "Close",
+      });
+    }
+  };
+
+  useEffect(() => {
     fetchSlotsAndSubject();
+    fetchElecSpec();
   }, []);
 
   const navigateToMinusOne = () => {
     navigate(-1);
   };
 
-  const handleCheckboxChange = (subjectId, slot) => {
-    setSelectedSubjects((prevSelectedSubjects) => ({
-      ...prevSelectedSubjects,
-      [subjectId]: slot,
-    }));
-  };
-
   useEffect(() => {
-    const delay = 5000;
+    const delay = 9000;
     const timeoutId = setTimeout(() => {
       toast(<PopupTwo />, {
         position: "bottom-center",
         autoClose: false,
         closeOnClick: true,
         draggable: true,
-        backgroundColor: "red",
       });
     }, delay);
 
     return () => clearTimeout(timeoutId);
   }, []);
 
-  const handleSlotSubmission = (e) => {
-    e.preventDefault();
-    alert("Submitted Successfully!");
+  const handleSlotSelection = (subjectId, slot) => {
+    setSelectedSubjects((prevSelectedSubjects) => ({
+      ...prevSelectedSubjects,
+      [subjectId]: slot,
+    }));
   };
+
+  const handleElectiveSelection = (elecCode, slot) => {
+    setSelectedElectives((prevSelectedElectives) => ({
+      ...prevSelectedElectives,
+      [elecCode]: slot,
+    }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    alert("Form submitted successfully!");
+  };
+
+  const validationSchema = Yup.object().shape({
+    // Add validation rules if needed
+  });
 
   return (
     <div>
       <ToastContainer />
       <div className="slot-container">
-        {/* <form className="slot-container"  onSubmit={handleSlotSubmission}> */}
-        <div
-          style={{ marginTop: "113px", padding: "30px", width: "100vw" }}
-          className="subject-tabl"
+        <Formik
+          initialValues={{ selectedSubjects, selectedElectives }}
+          validationSchema={validationSchema}
+          onSubmit={handleFormSubmit}
         >
-          <div className="two-side">
-            <div>
-              <h2>Subjects</h2>
-              <p>Total Slots: {totalSlotsCount}</p>
-            </div>
-            <div style={{ cursor: "pointer" }} onClick={navigateToMinusOne}>
-              {"<--"} Back
-            </div>
-          </div>
-
-          {loading === true ? (
-            <TableSimmerUi />
-          ) : (
-            <>
-              <table style={{ width: "100%" }}>
-                <thead>
-                  <tr>
-                    <th style={{ width: "100px" }}>Subject Code</th>
-                    <th style={{ width: "200px" }}>Subject Name</th>
-                    <th>Available Slots </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {subjects.map((subject) => (
-                    <tr key={subject.subject_id}>
-                      <td>{subject.subject_code}</td>
-                      <td>{subject.subject_name}</td>
-                      <td>
-                        <div className="slots">
-                          <div className="slots-contain">
-                            <p>
-                              {subject?.slot_list
-                                .split(",")
-                                .filter(Boolean)
-                                .map((slot, slotIndex) => (
-                                  <span
-                                    key={slotIndex}
-                                    className={
-                                      selectedSubjects[subject.subject_id] ===
-                                      `slot${slotIndex + 1}`
-                                        ? "this-is-slot"
-                                        : "this-is-not-slot"
-                                    }
-                                  >
-                                    {`Slot ${slotIndex + 1}: ${slot.trim()}`}{" "}
-                                    <input
-                                      type="radio"
-                                      name={`slot_${subject.subject_id}`}
-                                      onChange={() =>
-                                        handleCheckboxChange(
-                                          subject.subject_id,
-                                          `slot${slotIndex + 1}`
-                                        )
-                                      }
-                                      checked={
-                                        selectedSubjects[subject.subject_id] ===
-                                        `slot${slotIndex + 1}`
-                                      }
-                                    />
-                                  </span>
-                                ))}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {({ isSubmitting }) => (
+            // <Form>
               <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "30px",
-                }}
-                className="button"
+                style={{ marginTop: "113px", padding: "30px", width: "90vw" }}
+                className="subject-tabl"
               >
-                <button style={{ width: "400px" }} type="submit">
-                  Submit
-                </button>
+                <div className="two-side">
+                  <div>
+                    <h2>Subjects</h2>
+                    <p>Total Slots: {totalSlotsCount}</p>
+                  </div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={navigateToMinusOne}
+                  >
+                    {"<--"} Back
+                  </div>
+                </div>
+
+                {loading === true ? (
+                  <TableSimmerUi />
+                ) : (
+                  <>
+                    <table style={{ width: "100%" }}>
+                      <thead>
+                        <tr>
+                          <th style={{ width: "300px" }}>Subject Code</th>
+                          <th style={{ width: "300px" }}>Subject Name</th>
+                          <th style={{ width: "300px" }}>Available Slots </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {subjects.map((subject) => (
+                          <tr key={subject.slot_id}>
+                            <td>{subject.subject_code}</td>
+                            <td>{subject.subject_name}</td>
+                            <td>
+                              <div className="slots">
+                                <div className="slots-contain">
+                                  <p>
+                                    {subject?.slot_list
+                                      .split(",")
+                                      .filter(Boolean)
+                                      .map((slot, slotIndex) => (
+                                        <span
+                                          key={slotIndex}
+                                          className={
+                                            selectedSubjects[
+                                              subject.slot_id
+                                            ] === `slot${slotIndex + 1}`
+                                              ? "this-is-slot"
+                                              : "this-is-not-slot"
+                                          }
+                                        >
+                                          {`Slot ${
+                                            slotIndex + 1
+                                          }: ${slot.trim()}`}{" "}
+                                          <input
+                                            type="checkbox"
+                                            value={`slot${slotIndex + 1}`}
+                                            name={`subject_${subject?.slot_id}_slot`}
+                                            checked={
+                                              selectedSubjects[
+                                                subject.slot_id
+                                              ] === `slot${slotIndex + 1}`
+                                            }
+                                            onChange={() =>
+                                              handleSlotSelection(
+                                                subject.slot_id,
+                                                `slot${slotIndex + 1}`
+                                              )
+                                            }
+                                          />
+                                        </span>
+                                      ))}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+
+                    <table style={{ width: "100%" }}>
+                      <thead>
+                        <tr>
+                          <th style={{ width: "300px" }}>
+                            Elective/Specilazation Code
+                          </th>
+                          <th style={{ width: "300px" }}>
+                            Elective/Specilazation Name
+                          </th>
+                          <th style={{ width: "300px" }}>Available Slots </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {elecSpec &&
+                          elecSpec.map((item) => (
+                            <tr key={item.slot_id}>
+                              <td>{item.subject_code}</td>
+                              <td>{item.subject_name}</td>
+
+                              <td>
+                                <div className="slots">
+                                  <div className="slots-contain">
+                                    <p>
+                                      {item?.slot_list
+                                        .split(",")
+                                        .filter(Boolean)
+                                        .map((slot, slotIndex) => (
+                                          <span
+                                            key={slotIndex}
+                                            className={
+                                              selectedElectives[
+                                                item.subject_code
+                                              ] === `slot${slotIndex + 1}`
+                                                ? "this-is-slot"
+                                                : "this-is-not-slot"
+                                            }
+                                          >
+                                            {`Slot ${
+                                              slotIndex + 1
+                                            }: ${slot.trim()}`}{" "}
+                                            <input
+                                              type="checkbox"
+                                              value={`slot${slotIndex + 1}`}
+                                              name={`slot_${item.subject_code}`}
+                                              checked={
+                                                selectedElectives[
+                                                  item.subject_code
+                                                ] === `slot${slotIndex + 1}`
+                                              }
+                                              onChange={() =>
+                                                handleElectiveSelection(
+                                                  item.subject_code,
+                                                  `slot${slotIndex + 1}`
+                                                )
+                                              }
+                                            />
+                                          </span>
+                                        ))}
+                                    </p>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: "30px",
+                      }}
+                      className="button"
+                    >
+                      <button
+                        style={{ width: "400px" }}
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
-            </>
+            // </Form>
           )}
-        </div>
-        {/* </form> */}
+        </Formik>
       </div>
     </div>
   );

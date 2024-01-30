@@ -106,7 +106,8 @@ const StudentHomePage = () => {
 
         // Fetch data from the server
         const response = await fetch(
-          `http://172.17.18.255:8080/exam_sch/api/studentenrollment-session-search/?student_email=${studentEmail}&session_id=202401`
+          // `http://172.17.18.255:8080/exam_sch/api/studentenrollment-session-search/?student_email=${studentEmail}&session_id=202401`
+          `https://exam.unicornfortunes.com/exam_sch/api/studentenrollment-session-search/?student_email=${studentEmail}&session_id=202401`
         );
 
         console.log("Response Status:", response.status);

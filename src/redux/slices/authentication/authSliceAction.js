@@ -1,5 +1,4 @@
-import { message } from "antd";
-import { Navigate } from "react-router-dom";
+
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -16,8 +15,11 @@ export const LoginManual = async (user_email, user_password, dispatch, onSuccess
       url: "http://172.17.18.255:8080//exam_sch/api/login",
       data,
     };
-    const apiResponse = await axios(config);
-    console.log(apiResponse, "API RESPONSE LOGIN");
+ 
+      const apiResponse = await axios(config);
+      console.log(apiResponse, "API RESPONSE LOGIN");
+  
+    
 
     if (apiResponse?.status === 200) {
       if (apiResponse?.data && apiResponse?.data?.user_role_id === 3) {

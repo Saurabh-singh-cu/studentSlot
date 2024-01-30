@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 const Popup = () => {
   return (
     <div className="toast">
-      <h2>Guidelines</h2>
+      <h2 style={{color:"white"}}>Guidelines</h2>
       <ul>
-        <p>
+        <p style={{color:"wheat"}}>
           {" "}
           Verify your session details, including name, email, phone number, UID,
           and so on. Report inaccuracies to{" "}

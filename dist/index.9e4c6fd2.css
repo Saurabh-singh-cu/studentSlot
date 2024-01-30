@@ -1100,6 +1100,11 @@ th {
   top: 10em;
 }
 
+.Toastify__toast {
+  color: #f3eaea;
+  background-color: #000 !important;
+}
+
 .slots-contain {
   justify-content: space-around;
   display: flex;

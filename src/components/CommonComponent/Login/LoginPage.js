@@ -27,7 +27,8 @@ const LoginPage = ({ smtpAction }) => {
   const fetchData = async (userEmail) => {
     try {
       const response = await fetch(
-        `http://172.17.18.255:8080/exam_sch/api/studentenrollment-session-search/?student_email=${userEmail}&session_id=202401`
+        // `http://172.17.18.255:8080/exam_sch/api/studentenrollment-session-search/?student_email=${userEmail}&session_id=202401`
+        `https://exam.unicornfortunes.com/exam_sch/api/studentenrollment-session-search/?student_email=${userEmail}&session_id=202401`
       );
       const data = await response.json();
       setStudentData(data[0]);

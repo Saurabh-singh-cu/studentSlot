@@ -1196,10 +1196,16 @@ th {
   top: 10em;
   left: 50%;
   transform: translateX(-50%);
+ 
 }
 .toast{
   top: 10em;
 }
+.Toastify__toast{
+  background-color: black !important;
+  color: rgb(243, 234, 234);
+}
+
 .slots-contain{
   display: flex;
   justify-content: space-around;

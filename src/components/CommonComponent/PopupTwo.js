@@ -4,10 +4,10 @@ import { toast } from "react-toastify";
 
 const PopupTwo = () => {
   return (
-    <div className="toast">
-      <h2>Guidelines</h2>
+    <div style={{width:"100%"}}  className="toast">
+      <h2 style={{color:"white"}}>Guidelines</h2>
       <ul>
-        <p>
+        <p style={{color:"wheat"}}>
           {" "}
           Welcome to the slot booking page for your exams. Here, you can choose
           the <span style={{ color:"green"}}>available slots</span> for each subject, whether it's one, two, or more.
